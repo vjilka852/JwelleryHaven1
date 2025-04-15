@@ -1,0 +1,147 @@
+/* Change pagination indicator color */
+.swiper-pagination-bullet {
+    background-color: black !important; /* Set dots to black */
+    opacity: 0.6;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: black !important; /* Set active dot to black */
+    opacity: 1;
+}
+/* Change navigation arrow color */
+.swiper-button-prev,
+.swiper-button-next {
+    color: black !important; /* Set arrow color to black */
+}
+
+/* On hover, make it darker */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    color: #333 !important; /* Darker shade */
+}
+
+/* Center content */
+.category-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Card styling */
+.category-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image styling */
+.category-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+/* Text & button styling */
+.category-info {
+  padding: 15px;
+}
+
+.category-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.category-button {
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.category-button:hover {
+  background-color: #333;
+}
+
+
+.view-all-container {
+  margin-top: 20px;
+}
+
+.view-all-button {
+  background-color: black;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 20px auto;
+}
+
+.view-all-button:hover {
+  background-color: #333;
+}
+
+.product-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-card {
+  width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 15px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.product-details {
+  padding: 10px;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-price {
+  font-size: 1rem;
+  color: #444;
+  margin: 5px 0;
+}
+
+.product-stock {
+  font-size: 0.9rem;
+  color: red;
+  font-weight: bold;
+}
