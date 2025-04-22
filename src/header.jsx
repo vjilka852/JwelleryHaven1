@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
+import { FaShoppingCart } from "react-icons/fa";
+
 
 const Header = () => {
     const navigate = useNavigate();
@@ -26,6 +28,11 @@ const Header = () => {
             </ul>
 
             <div className="flex space-x-2 items-center">
+            <Link to="/cart">
+  <FaShoppingCart className="text-white text-xl cursor-pointer hover:text-gray-400" />
+</Link>
+
+
                 {user ? (
                     <>
                         <span className="mr-3 text-sm font-medium">

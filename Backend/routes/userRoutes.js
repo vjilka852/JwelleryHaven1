@@ -1,55 +1,90 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt"); 
+const User = require("../Models/User"); 
+const razorpayInstance = require("../config/razorpay");
 
-// Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
+    if (!user) return res.status(401).json({ success: false, message: "Invalid email" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ success: false, message: "Invalid password" });
+
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+router.post("/admin-login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log("Admin login attempt:", email, password);
+
+  try {
+    const user = await User.findOne({ email });
+    console.log("Found user:", user);
 
     if (!user) {
-      return res.json({ success: false, message: "User not found" });
+      return res.status(404).json({ success: false, message: "Admin not found" });
     }
 
-    if (user.password !== password) {
-      return res.json({ success: false, message: "Incorrect password" });
+    if (user.role !== "admin") {
+      return res.status(401).json({ success: false, message: "Not an admin" });
     }
 
-    res.json({ success: true, user }); // Send full user data (you can remove password manually if needed)
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match:", isMatch);
+
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Incorrect password" });
+    }
+
+    res.json({ success: true, user });
   } catch (err) {
-    console.log("Login error:", err);
-    res.json({ success: false, message: "Server error" });
+    console.log("Admin login error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
-// Register route
+
+
+
+
+// ✅ REGISTER USER OR ADMIN
 router.post("/register", async (req, res) => {
+  const { email, password, role } = req.body;
+
   try {
-    const existingUser = await User.findOne({ email: req.body.email });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.json({ success: false, message: "Email already exists" });
+      return res.status(400).json({ success: false, message: "User already exists" });
     }
 
-    const user = await User.create(req.body);
-    res.json({ success: true, user });
-  } catch (err) {
-    console.log("Register error:", err);
-    res.json({ success: false, message: "Registration failed" });
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    const newUser = new User({ email, password: hashedPassword, role: role || "user" });
+    await newUser.save();
+
+    res.status(201).json({ success: true, user: newUser });
+  } catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
-// Get user by ID (for profile etc.)
-router.get("/user/:id", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("-password");
-    if (!user) return res.json({ success: false });
-    res.json({ success: true, user });
-  } catch (error) {
-    console.log("Get user error:", error);
-    res.json({ success: false });
-  }
+router.get('/', async (req, res) => {
+  const users = await User.find(); 
+  res.json(users);
 });
+
+
 
 module.exports = router;

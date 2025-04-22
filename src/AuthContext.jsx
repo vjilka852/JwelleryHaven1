@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId && !user) {
-      axios.get(`http://localhost:3001/user/${userId}`)
+      axios.get(`http://localhost:3001/api/users/${userId}`)
         .then(res => {
           if (res.data.success) setUser(res.data.user);
         })
